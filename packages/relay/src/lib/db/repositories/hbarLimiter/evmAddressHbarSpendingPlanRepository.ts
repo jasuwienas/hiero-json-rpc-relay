@@ -35,7 +35,7 @@ export class EvmAddressHbarSpendingPlanRepository {
    */
   async existsByAddress(evmAddress: string): Promise<boolean> {
     const key = this.getKey(evmAddress);
-    const addressPlan = await this.cache.getAsync<IEvmAddressHbarSpendingPlan>(key, 'existsByAddress');
+    const addressPlan = await this.cache.get<IEvmAddressHbarSpendingPlan>(key, 'existsByAddress');
     return !!addressPlan;
   }
 
@@ -50,7 +50,7 @@ export class EvmAddressHbarSpendingPlanRepository {
     const key = this.getKey('*');
     const keys = await this.cache.keys(key, callingMethod);
     for (const key of keys) {
-      const addressPlan = await this.cache.getAsync<IEvmAddressHbarSpendingPlan>(key, callingMethod);
+      const addressPlan = await this.cache.get<IEvmAddressHbarSpendingPlan>(key, callingMethod);
       if (addressPlan?.planId === planId) {
         evmAddressPlans.push(new EvmAddressHbarSpendingPlan(addressPlan));
       }
@@ -67,7 +67,7 @@ export class EvmAddressHbarSpendingPlanRepository {
     const key = this.getKey('*');
     const keys = await this.cache.keys(key, callingMethod);
     for (const key of keys) {
-      const addressPlan = await this.cache.getAsync<IEvmAddressHbarSpendingPlan>(key, callingMethod);
+      const addressPlan = await this.cache.get<IEvmAddressHbarSpendingPlan>(key, callingMethod);
       if (addressPlan?.planId === planId) {
         if (this.logger.isLevelEnabled('trace')) {
           this.logger.trace(`Removing EVM address ${addressPlan.evmAddress} from HbarSpendingPlan with ID ${planId}`);
@@ -85,7 +85,7 @@ export class EvmAddressHbarSpendingPlanRepository {
    */
   async findByAddress(evmAddress: string): Promise<EvmAddressHbarSpendingPlan> {
     const key = this.getKey(evmAddress);
-    const addressPlan = await this.cache.getAsync<IEvmAddressHbarSpendingPlan>(key, 'findByAddress');
+    const addressPlan = await this.cache.get<IEvmAddressHbarSpendingPlan>(key, 'findByAddress');
     if (!addressPlan) {
       throw new EvmAddressHbarSpendingPlanNotFoundError(evmAddress);
     }
@@ -122,7 +122,7 @@ export class EvmAddressHbarSpendingPlanRepository {
    */
   async delete(evmAddress: string): Promise<void> {
     const key = this.getKey(evmAddress);
-    const evmAddressPlan = await this.cache.getAsync<IEvmAddressHbarSpendingPlan>(key, 'delete');
+    const evmAddressPlan = await this.cache.get<IEvmAddressHbarSpendingPlan>(key, 'delete');
     await this.cache.delete(key, 'delete');
     const errorMessage = evmAddressPlan
       ? `Removed EVM address ${evmAddress} from HbarSpendingPlan with ID ${evmAddressPlan.planId}`

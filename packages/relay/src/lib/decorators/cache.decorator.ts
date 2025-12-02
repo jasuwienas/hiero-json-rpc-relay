@@ -51,7 +51,7 @@ export function cache<T>(options: CacheOptions = {}, cacheServiceProp: keyof T =
       const cacheKey = generateCacheKey(methodName, args);
       const cacheService = this[cacheServiceProp] as CacheService;
 
-      const cachedResponse = await cacheService.getAsync(cacheKey, methodName);
+      const cachedResponse = await cacheService.get(cacheKey, methodName);
       if (cachedResponse) return cachedResponse;
 
       const result = await target.apply(this, args);
@@ -60,12 +60,7 @@ export function cache<T>(options: CacheOptions = {}, cacheServiceProp: keyof T =
         !shouldSkipCachingForSingleParams(args, options.skipParams) &&
         !shouldSkipCachingForNamedParams(args, options.skipNamedParams)
       ) {
-        await cacheService.set(
-          cacheKey,
-          result,
-          methodName,
-          options.ttl ?? ConfigService.get('CACHE_TTL'),
-        );
+        await cacheService.set(cacheKey, result, methodName, options.ttl ?? ConfigService.get('CACHE_TTL'));
       }
       return result;
     };

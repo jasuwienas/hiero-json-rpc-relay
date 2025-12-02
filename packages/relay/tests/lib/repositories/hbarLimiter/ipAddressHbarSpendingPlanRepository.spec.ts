@@ -110,9 +110,8 @@ describe('IPAddressHbarSpendingPlanRepository', function () {
         await repository.deleteAllByPlanId(planId, 'deleteAllByPlanId');
 
         for (const ipAddress of ipAddresses) {
-          await expect(
-            cacheService.getAsync(`${IPAddressHbarSpendingPlanRepository.collectionKey}:${ipAddress}`, 'test'),
-          ).to.eventually.be.null;
+          await expect(cacheService.get(`${IPAddressHbarSpendingPlanRepository.collectionKey}:${ipAddress}`, 'test')).to
+            .eventually.be.null;
         }
       });
 
@@ -148,7 +147,7 @@ describe('IPAddressHbarSpendingPlanRepository', function () {
         const addressPlan: IIPAddressHbarSpendingPlan = { ipAddress, planId: uuidV4(randomBytes(16)) };
 
         await repository.save(addressPlan, ttl);
-        const result = await cacheService.getAsync<IIPAddressHbarSpendingPlan>(
+        const result = await cacheService.get<IIPAddressHbarSpendingPlan>(
           `${IPAddressHbarSpendingPlanRepository.collectionKey}:${ipAddress}`,
           'test',
         );
@@ -173,7 +172,7 @@ describe('IPAddressHbarSpendingPlanRepository', function () {
         const newPlanId = uuidV4(randomBytes(16));
         const newAddressPlan: IIPAddressHbarSpendingPlan = { ipAddress, planId: newPlanId };
         await repository.save(newAddressPlan, ttl);
-        const result = await cacheService.getAsync<IIPAddressHbarSpendingPlan>(
+        const result = await cacheService.get<IIPAddressHbarSpendingPlan>(
           `${IPAddressHbarSpendingPlanRepository.collectionKey}:${ipAddress}`,
           'test',
         );
@@ -198,7 +197,7 @@ describe('IPAddressHbarSpendingPlanRepository', function () {
         );
 
         await repository.delete(ipAddress);
-        const result = await cacheService.getAsync<IIPAddressHbarSpendingPlan>(
+        const result = await cacheService.get<IIPAddressHbarSpendingPlan>(
           `${IPAddressHbarSpendingPlanRepository.collectionKey}:${ipAddress}`,
           'test',
         );

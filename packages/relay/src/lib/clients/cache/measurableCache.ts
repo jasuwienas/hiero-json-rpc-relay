@@ -33,19 +33,6 @@ export class MeasurableCache implements ICacheClient {
   }
 
   /**
-   * Alias for the `get` method.
-   *
-   * @param key - The key associated with the cached value.
-   * @param callingMethod - The name of the method calling the cache.
-   * @returns The cached value if found, otherwise null.
-   *
-   * @deprecated use `get` instead.
-   */
-  public getAsync(key: string, callingMethod: string): Promise<any> {
-    return this.decorated.get(key, callingMethod);
-  }
-
-  /**
    * Calls the method that retrieves a cached value associated with the given key
    * and tracks how many times this event occurs.
    *

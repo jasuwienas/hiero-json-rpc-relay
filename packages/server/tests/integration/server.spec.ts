@@ -3002,7 +3002,7 @@ describe('RPC Server', function () {
       let getBlock: sinon.SinonStub;
       let callTracer: sinon.SinonStub;
       let prestateTracer: sinon.SinonStub;
-      let cacheGetAsync: sinon.SinonStub;
+      let cacheGet: sinon.SinonStub;
       let cacheSet: sinon.SinonStub;
       let requireDebugAPIEnabled: sinon.SinonStub;
 
@@ -3049,7 +3049,7 @@ describe('RPC Server', function () {
         });
         callTracer = sinon.stub(DebugImpl.prototype, 'callTracer').resolves(callTracerResult);
         prestateTracer = sinon.stub(DebugImpl.prototype, 'prestateTracer').resolves(prestateTracerResult);
-        cacheGetAsync = sinon.stub(MeasurableCache.prototype, 'getAsync').resolves(null);
+        cacheGet = sinon.stub(MeasurableCache.prototype, 'get').resolves(null);
         cacheSet = sinon.stub(MeasurableCache.prototype, 'set').resolves();
         requireDebugAPIEnabled = sinon.stub(DebugImpl, 'requireDebugAPIEnabled').returns();
       });
@@ -3061,7 +3061,7 @@ describe('RPC Server', function () {
         getBlock.restore();
         callTracer.restore();
         prestateTracer.restore();
-        cacheGetAsync.restore();
+        cacheGet.restore();
         cacheSet.restore();
         requireDebugAPIEnabled.restore();
       });
@@ -3183,7 +3183,7 @@ describe('RPC Server', function () {
 
       it('should return cached result if available', async () => {
         const cachedResult = [{ txHash: '0xabcd1234', result: callTracerResult }];
-        cacheGetAsync.resolves(cachedResult);
+        cacheGet.resolves(cachedResult);
 
         const response = await testClient.post('/', {
           jsonrpc: '2.0',

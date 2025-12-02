@@ -115,9 +115,8 @@ describe('@evmAddressHbarSpendingPlanRepository EvmAddressHbarSpendingPlanReposi
         await repository.deleteAllByPlanId(planId, 'deleteAllByPlanId');
 
         for (const evmAddress of evmAddresses) {
-          await expect(
-            cacheService.getAsync(`${EvmAddressHbarSpendingPlanRepository.collectionKey}:${evmAddress}`, 'test'),
-          ).to.eventually.be.null;
+          await expect(cacheService.get(`${EvmAddressHbarSpendingPlanRepository.collectionKey}:${evmAddress}`, 'test'))
+            .to.eventually.be.null;
         }
       });
 
@@ -156,7 +155,7 @@ describe('@evmAddressHbarSpendingPlanRepository EvmAddressHbarSpendingPlanReposi
         const addressPlan: IEvmAddressHbarSpendingPlan = { evmAddress, planId: uuidV4(randomBytes(16)) };
 
         await repository.save(addressPlan, ttl);
-        const result = await cacheService.getAsync<IEvmAddressHbarSpendingPlan>(
+        const result = await cacheService.get<IEvmAddressHbarSpendingPlan>(
           `${EvmAddressHbarSpendingPlanRepository.collectionKey}:${evmAddress}`,
           'test',
         );
@@ -182,7 +181,7 @@ describe('@evmAddressHbarSpendingPlanRepository EvmAddressHbarSpendingPlanReposi
         const newPlanId = uuidV4(randomBytes(16));
         const newAddressPlan: IEvmAddressHbarSpendingPlan = { evmAddress, planId: newPlanId };
         await repository.save(newAddressPlan, ttl);
-        const result = await cacheService.getAsync<IEvmAddressHbarSpendingPlan>(
+        const result = await cacheService.get<IEvmAddressHbarSpendingPlan>(
           `${EvmAddressHbarSpendingPlanRepository.collectionKey}:${evmAddress}`,
           'test',
         );
@@ -208,7 +207,7 @@ describe('@evmAddressHbarSpendingPlanRepository EvmAddressHbarSpendingPlanReposi
         );
 
         await repository.delete(evmAddress);
-        const result = await cacheService.getAsync<IEvmAddressHbarSpendingPlan>(
+        const result = await cacheService.get<IEvmAddressHbarSpendingPlan>(
           `${EvmAddressHbarSpendingPlanRepository.collectionKey}:${evmAddress}`,
           'test',
         );
