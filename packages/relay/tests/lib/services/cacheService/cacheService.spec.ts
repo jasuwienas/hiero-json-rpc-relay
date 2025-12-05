@@ -146,7 +146,7 @@ describe('CacheService Test Suite', async function () {
       const value = 'value';
 
       await cacheService.set(key, value, callingMethod);
-      const cachedValue = await cacheService.getAsync(key, callingMethod);
+      const cachedValue = await cacheService.get(key, callingMethod);
 
       expect(cachedValue).eq(value);
     });
@@ -157,17 +157,17 @@ describe('CacheService Test Suite', async function () {
 
       await cacheService.set(key, value, callingMethod);
       await cacheService.delete(key, callingMethod);
-      const cachedValue = await cacheService.getAsync(key, callingMethod);
+      const cachedValue = await cacheService.get(key, callingMethod);
 
       expect(cachedValue).to.be.null;
     });
 
-    it('should be able to get from internal cache when calling getAsync', async function () {
+    it('should be able to get from internal cache when calling get', async function () {
       const key = 'string';
       const value = 'value';
 
       await cacheService.set(key, value, callingMethod);
-      const cachedValue = await cacheService.getAsync(key, callingMethod);
+      const cachedValue = await cacheService.get(key, callingMethod);
 
       expect(cachedValue).eq(value);
     });
@@ -181,7 +181,7 @@ describe('CacheService Test Suite', async function () {
       await cacheService.multiSet(entries, callingMethod);
 
       for (const [key, value] of Object.entries(entries)) {
-        const valueFromCache = await cacheService.getAsync(key, callingMethod);
+        const valueFromCache = await cacheService.get(key, callingMethod);
         expect(valueFromCache).eq(value);
       }
     });
@@ -204,7 +204,7 @@ describe('CacheService Test Suite', async function () {
         const value = 'item';
 
         await cacheService.rPush(key, value, callingMethod);
-        const cachedValue = await cacheService.getAsync(key, callingMethod);
+        const cachedValue = await cacheService.get(key, callingMethod);
 
         expect(cachedValue).to.deep.equal([value]);
       });
@@ -271,7 +271,7 @@ describe('CacheService Test Suite', async function () {
 
       await cacheService.set(key, value, callingMethod);
 
-      const cachedValue = await cacheService.getAsync(key, callingMethod);
+      const cachedValue = await cacheService.get(key, callingMethod);
       expect(cachedValue).eq(value);
     });
 
@@ -283,7 +283,7 @@ describe('CacheService Test Suite', async function () {
 
       await cacheService.delete(key, callingMethod);
 
-      const cachedValue = await cacheService.getAsync(key, callingMethod);
+      const cachedValue = await cacheService.get(key, callingMethod);
       expect(cachedValue).to.be.null;
     });
 
@@ -293,7 +293,7 @@ describe('CacheService Test Suite', async function () {
 
       await cacheService.set(key, value, callingMethod);
 
-      const cachedValue = await cacheService.getAsync(key, callingMethod);
+      const cachedValue = await cacheService.get(key, callingMethod);
       expect(cachedValue).eq(value);
     });
 
@@ -301,7 +301,7 @@ describe('CacheService Test Suite', async function () {
       await cacheService.multiSet(multiSetEntries, callingMethod);
 
       for (const [key, value] of Object.entries(multiSetEntries)) {
-        const valueFromCache = await cacheService.getAsync(key, callingMethod);
+        const valueFromCache = await cacheService.get(key, callingMethod);
         expect(valueFromCache).eq(value);
       }
     });
@@ -313,16 +313,16 @@ describe('CacheService Test Suite', async function () {
       await cacheService.multiSet(multiSetEntries, callingMethod);
 
       for (const [key, value] of Object.entries(multiSetEntries)) {
-        const valueFromCache = await cacheService.getAsync(key, callingMethod);
+        const valueFromCache = await cacheService.get(key, callingMethod);
         expect(valueFromCache).eq(value);
       }
     });
 
-    it('should be able to ignore getAsync failure in case of Redis error', async function () {
+    it('should be able to ignore get failure in case of Redis error', async function () {
       const key = 'string';
       await RedisClientManager.disconnect();
 
-      const cachedValue = await cacheService.getAsync(key, callingMethod);
+      const cachedValue = await cacheService.get(key, callingMethod);
       expect(cachedValue).eq(null);
     });
 

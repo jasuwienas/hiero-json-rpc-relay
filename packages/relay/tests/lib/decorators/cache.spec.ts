@@ -18,7 +18,7 @@ describe('cache decorator', () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox();
     cacheService = {
-      getAsync: sandbox.stub(),
+      get: sandbox.stub(),
       set: sandbox.stub(),
     } as any;
   });
@@ -47,21 +47,21 @@ describe('cache decorator', () => {
   describe('@cache', async () => {
     it('should return cached result if available', async () => {
       const instance = createDecoratedMethod();
-      cacheService.getAsync.resolves(CACHED_RESULT);
+      cacheService.get.resolves(CACHED_RESULT);
 
       const result = await instance.testMethod('arg1', 'arg2', requestDetails);
       expect(result).to.equal(CACHED_RESULT);
-      expect(cacheService.getAsync.calledOnce).to.be.true;
+      expect(cacheService.get.calledOnce).to.be.true;
       expect(cacheService.set.notCalled).to.be.true;
     });
 
     it('should compute and cache result if not cached', async () => {
       const instance = createDecoratedMethod();
-      cacheService.getAsync.resolves(null);
+      cacheService.get.resolves(null);
 
       const result = await instance.testMethod('arg1', 'arg2', requestDetails);
       expect(result).to.equal(getComputedResult('arg1', 'arg2', requestDetails));
-      expect(cacheService.getAsync.calledOnce).to.be.true;
+      expect(cacheService.get.calledOnce).to.be.true;
       expect(cacheService.set.calledOnce).to.be.true;
 
       const args = cacheService.set.getCall(0).args;
@@ -73,7 +73,7 @@ describe('cache decorator', () => {
       const instance = createDecoratedMethod({
         skipParams: [{ index: '0', value: 'latest' }],
       });
-      cacheService.getAsync.resolves(null);
+      cacheService.get.resolves(null);
 
       const result = await instance.testMethod('latest', 'another', requestDetails);
       expect(result).to.equal(getComputedResult('latest', 'another', requestDetails));
@@ -89,7 +89,7 @@ describe('cache decorator', () => {
           },
         ],
       });
-      cacheService.getAsync.resolves(null);
+      cacheService.get.resolves(null);
 
       const result = await instance.testMethod({ fromBlock: 'pending' }, 'another', requestDetails);
       expect(result).to.equal(getComputedResult({ fromBlock: 'pending' }, 'another', requestDetails));
@@ -98,7 +98,7 @@ describe('cache decorator', () => {
 
     it('should use custom TTL if provided', async () => {
       const instance = createDecoratedMethod({ ttl: 555 });
-      cacheService.getAsync.resolves(null);
+      cacheService.get.resolves(null);
 
       const result = await instance.testMethod('latest', 'another', requestDetails);
       expect(result).to.equal(getComputedResult('latest', 'another', requestDetails));

@@ -38,7 +38,7 @@ export class HbarSpendingPlanRepository {
    */
   async findById(id: string): Promise<IHbarSpendingPlan> {
     const key = this.getKey(id);
-    const plan = await this.cache.getAsync<IHbarSpendingPlan>(key, 'findById');
+    const plan = await this.cache.get<IHbarSpendingPlan>(key, 'findById');
     if (!plan) {
       throw new HbarSpendingPlanNotFoundError(id);
     }
@@ -154,7 +154,7 @@ export class HbarSpendingPlanRepository {
       this.logger.debug(`Retrieving amountSpent for HbarSpendingPlan with ID ${id}...`);
     }
     const key = this.getAmountSpentKey(id);
-    return this.cache.getAsync(key, 'getAmountSpent').then((amountSpent) => parseInt(amountSpent ?? '0'));
+    return this.cache.get(key, 'getAmountSpent').then((amountSpent) => parseInt(amountSpent ?? '0'));
   }
 
   /**
@@ -184,7 +184,7 @@ export class HbarSpendingPlanRepository {
     await this.checkExistsAndActive(id);
 
     const key = this.getAmountSpentKey(id);
-    if (!(await this.cache.getAsync(key, 'addToAmountSpent'))) {
+    if (!(await this.cache.get(key, 'addToAmountSpent'))) {
       if (this.logger.isLevelEnabled('trace')) {
         this.logger.trace(`No spending yet for HbarSpendingPlan with ID ${id}, setting amountSpent to ${amount}...`);
       }
@@ -205,7 +205,7 @@ export class HbarSpendingPlanRepository {
   async findAllActiveBySubscriptionTier(tiers: SubscriptionTier[]): Promise<IDetailedHbarSpendingPlan[]> {
     const callerMethod = this.findAllActiveBySubscriptionTier.name;
     const keys = await this.cache.keys(this.getKey('*'), callerMethod);
-    const plans = await Promise.all(keys.map((key) => this.cache.getAsync<IHbarSpendingPlan>(key, callerMethod)));
+    const plans = await Promise.all(keys.map((key) => this.cache.get<IHbarSpendingPlan>(key, callerMethod)));
     return Promise.all(
       plans
         .filter((plan) => tiers.includes(plan.subscriptionTier) && plan.active)

@@ -186,7 +186,7 @@ export class AccountService implements IAccountService {
     const latestBlockTolerance = 1;
     let blockHashNumber, isHash;
     const cacheKey = `${constants.CACHE_KEY.ETH_BLOCK_NUMBER}`;
-    const blockNumberCached = await this.cacheService.getAsync(cacheKey, constants.ETH_GET_BALANCE);
+    const blockNumberCached = await this.cacheService.get(cacheKey, constants.ETH_GET_BALANCE);
 
     if (blockNumberCached) {
       if (this.logger.isLevelEnabled('trace')) {

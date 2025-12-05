@@ -53,7 +53,7 @@ describe('Filter API Test Suite', async function () {
 
   const validateFilterCache = async (filterId: string, expectedFilterType: string, expectedParams = {}) => {
     const cacheKey = `${constants.CACHE_KEY.FILTERID}_${filterId}`;
-    const cachedFilter = await cacheService.getAsync(cacheKey, 'validateFilterCache');
+    const cachedFilter = await cacheService.get(cacheKey, 'validateFilterCache');
     expect(cachedFilter).to.exist;
     expect(cachedFilter.type).to.exist;
     expect(cachedFilter.type).to.eq(expectedFilterType);
@@ -339,7 +339,7 @@ describe('Filter API Test Suite', async function () {
 
       const result = await filterService.uninstallFilter(existingFilterId, requestDetails);
 
-      const isDeleted = !(await cacheService.getAsync(cacheKey, filterService.ethUninstallFilter));
+      const isDeleted = !(await cacheService.get(cacheKey, filterService.ethUninstallFilter));
       expect(result).to.eq(true);
       expect(isDeleted).to.eq(true);
     });

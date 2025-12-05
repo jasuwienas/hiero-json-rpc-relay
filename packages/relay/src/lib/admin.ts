@@ -57,7 +57,7 @@ export class AdminImpl implements Admin {
   public async config(): Promise<IAdminConfig> {
     const cacheKey = `${constants.CACHE_KEY.ADMIN_CONFIG}`;
 
-    let info: IAdminConfig = await this.cacheService.getAsync(cacheKey, AdminImpl.config);
+    let info: IAdminConfig = await this.cacheService.get(cacheKey, AdminImpl.config);
     if (!info) {
       const maskedEnvs = ConfigService.getAllMasked();
       info = {

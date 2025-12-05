@@ -35,7 +35,7 @@ export class IPAddressHbarSpendingPlanRepository {
    */
   async existsByAddress(ipAddress: string): Promise<boolean> {
     const key = this.getKey(ipAddress);
-    const addressPlan = await this.cache.getAsync<IIPAddressHbarSpendingPlan>(key, 'existsByAddress');
+    const addressPlan = await this.cache.get<IIPAddressHbarSpendingPlan>(key, 'existsByAddress');
     return !!addressPlan;
   }
 
@@ -50,7 +50,7 @@ export class IPAddressHbarSpendingPlanRepository {
     const key = this.getKey('*');
     const keys = await this.cache.keys(key, callingMethod);
     for (const key of keys) {
-      const addressPlan = await this.cache.getAsync<IIPAddressHbarSpendingPlan>(key, callingMethod);
+      const addressPlan = await this.cache.get<IIPAddressHbarSpendingPlan>(key, callingMethod);
       if (addressPlan?.planId === planId) {
         ipAddressPlans.push(new IPAddressHbarSpendingPlan(addressPlan));
       }
@@ -67,7 +67,7 @@ export class IPAddressHbarSpendingPlanRepository {
     const key = this.getKey('*');
     const keys = await this.cache.keys(key, callingMethod);
     for (const key of keys) {
-      const addressPlan = await this.cache.getAsync<IIPAddressHbarSpendingPlan>(key, callingMethod);
+      const addressPlan = await this.cache.get<IIPAddressHbarSpendingPlan>(key, callingMethod);
       if (addressPlan?.planId === planId) {
         if (this.logger.isLevelEnabled('trace')) {
           this.logger.trace(`Removing IP address from HbarSpendingPlan with ID ${planId}`);
@@ -85,7 +85,7 @@ export class IPAddressHbarSpendingPlanRepository {
    */
   async findByAddress(ipAddress: string): Promise<IPAddressHbarSpendingPlan> {
     const key = this.getKey(ipAddress);
-    const addressPlan = await this.cache.getAsync<IIPAddressHbarSpendingPlan>(key, 'findByAddress');
+    const addressPlan = await this.cache.get<IIPAddressHbarSpendingPlan>(key, 'findByAddress');
     if (!addressPlan) {
       throw new IPAddressHbarSpendingPlanNotFoundError(ipAddress);
     }
@@ -116,7 +116,7 @@ export class IPAddressHbarSpendingPlanRepository {
    */
   async delete(ipAddress: string): Promise<void> {
     const key = this.getKey(ipAddress);
-    const ipAddressSpendingPlan = await this.cache.getAsync<IIPAddressHbarSpendingPlan>(key, 'delete');
+    const ipAddressSpendingPlan = await this.cache.get<IIPAddressHbarSpendingPlan>(key, 'delete');
     await this.cache.delete(key, 'delete');
     const errorMessage = ipAddressSpendingPlan
       ? `Removed IP address from HbarSpendingPlan with ID ${ipAddressSpendingPlan.planId}`

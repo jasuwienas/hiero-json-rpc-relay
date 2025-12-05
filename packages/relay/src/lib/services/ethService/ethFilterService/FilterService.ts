@@ -97,7 +97,7 @@ export class FilterService implements IFilterService {
    */
   private async getFilterFromCache(filterId: string, method: string) {
     const cacheKey = this.getCacheKey(filterId);
-    return await this.cacheService.getAsync(cacheKey, method);
+    return await this.cacheService.get(cacheKey, method);
   }
 
   /**

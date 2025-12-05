@@ -826,7 +826,7 @@ describe('Debug API Test Suite', async function () {
         const getHistoricalBlockResponseStub = sinon.stub().resolves(blockResponse);
         sinon.stub(CommonService.prototype, 'getHistoricalBlockResponse').callsFake(getHistoricalBlockResponseStub);
 
-        sinon.stub(cacheService, 'getAsync').resolves(cachedResult);
+        sinon.stub(cacheService, 'get').resolves(cachedResult);
 
         const result = await debugService.traceBlockByNumber(
           blockNumber,
@@ -842,7 +842,7 @@ describe('Debug API Test Suite', async function () {
           const getHistoricalBlockResponseStub = sinon.stub().resolves(blockResponse);
           sinon.stub(CommonService.prototype, 'getHistoricalBlockResponse').callsFake(getHistoricalBlockResponseStub);
 
-          sinon.stub(cacheService, 'getAsync').resolves(null);
+          sinon.stub(cacheService, 'get').resolves(null);
           sinon.stub(cacheService, 'set').resolves();
         });
 
@@ -888,7 +888,7 @@ describe('Debug API Test Suite', async function () {
           const getHistoricalBlockResponseStub = sinon.stub().resolves(blockResponse);
           sinon.stub(CommonService.prototype, 'getHistoricalBlockResponse').callsFake(getHistoricalBlockResponseStub);
 
-          sinon.stub(cacheService, 'getAsync').resolves(null);
+          sinon.stub(cacheService, 'get').resolves(null);
           sinon.stub(cacheService, 'set').resolves();
         });
 
